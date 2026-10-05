@@ -1,0 +1,94 @@
+accessWidener v1 official
+# Automatically handles replacements (ex. GG -> GGE) per Stonecutter!!
+# Widening statements should either declare the class using the widened member (many usages),
+# or they should have a comment at the end of the line where the member is referenced (1-2 usages)
+
+# MutableComponent - Config, TextUtil
+
+accessible method net/minecraft/network/chat/MutableComponent <init> (Lnet/minecraft/network/chat/ComponentContents;Ljava/util/List;Lnet/minecraft/network/chat/Style;)V
+
+
+## ChatComponent - (Mixin), ChatUtil#modifyMessage()
+
+accessible field net/minecraft/client/gui/components/ChatComponent BOTTOM_MARGIN I # ContextMenu#extractSelectionOutline()
+accessible field net/minecraft/client/gui/components/ChatComponent allMessages Ljava/util/List;
+accessible field net/minecraft/client/gui/components/ChatComponent trimmedMessages Ljava/util/List;
+accessible field net/minecraft/client/gui/components/ChatComponent chatScrollbarPos I
+accessible method net/minecraft/client/gui/components/ChatComponent getLineHeight ()I
+
+#? if <=1.20.1 {
+#accessible method net/minecraft/client/gui/components/ChatComponent isChatFocused ()Z
+#?}
+
+#? if <=1.20.4 {
+#accessible method net/minecraft/client/gui/components/ChatComponent addMessage (Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;ILnet/minecraft/client/GuiMessageTag;Z)V
+#?}
+
+#? if >=1.21.11 {
+accessible method net/minecraft/client/gui/components/ChatComponent getWidth ()I # ContextMenu#extractSelectionOutline()
+accessible method net/minecraft/client/gui/components/ChatComponent getScale ()D
+#?}
+
+#? if >=26.1 {
+accessible method net/minecraft/client/gui/components/ChatComponent addMessage (Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/multiplayer/chat/GuiMessageSource;Lnet/minecraft/client/multiplayer/chat/GuiMessageTag;)V
+#?}
+
+
+## ChatScreen - ContextMenu #init(), #close()
+
+accessible field net/minecraft/client/gui/screens/ChatScreen input Lnet/minecraft/client/gui/components/EditBox;
+
+
+## TextColor - Colors
+
+accessible field net/minecraft/network/chat/TextColor NAMED_COLORS Ljava/util/Map; # Colors#VALUE_TO_TEXTCOLOR
+
+
+## ChatFormatting - Colors
+
+accessible field net/minecraft/ChatFormatting code C # Colors#getCode()
+
+
+## GuiGraphics / GuiGraphicsExtractor - ScreenMixin, ActiveTextCollectorsMixin, ContextMenu#extractSelectionOutline()
+
+# FIXME: GG<->GGE conversions are not working again... no idea why..
+#~ if <26.1 'GuiGraphicsExtractor' -> 'GuiGraphics' {
+#? if >=1.21.6 {
+accessible field net/minecraft/client/gui/GuiGraphicsExtractor deferredTooltip Ljava/lang/Runnable;
+#?}
+
+#? if >=1.21.11 {
+accessible field net/minecraft/client/gui/GuiGraphicsExtractor hoveredTextStyle Lnet/minecraft/network/chat/Style;
+#?}
+
+#? if >=1.21.11 {
+accessible class net/minecraft/client/gui/GuiGraphicsExtractor$RenderingTextCollector
+#?}
+#~}
+
+
+## GridLayout - ContextMenu.Grid
+
+accessible field net/minecraft/client/gui/layouts/GridLayout children Ljava/util/List;
+
+
+## GridLayout$ChildContainer - ContextMenu#buttons()
+
+#? if >=26.1 {
+accessible class net/minecraft/client/gui/layouts/GridLayout$ChildContainer
+#?}
+
+
+## Button - ContextMenu#registerButton(....)
+
+accessible field net/minecraft/client/gui/components/Button onPress Lnet/minecraft/client/gui/components/Button$OnPress;
+accessible field net/minecraft/client/gui/components/Button DEFAULT_NARRATION Lnet/minecraft/client/gui/components/Button$CreateNarration;
+
+#~ if <1.21.11 'Button$Plain ' -> 'Button ' >> '<init>'
+accessible method net/minecraft/client/gui/components/Button$Plain <init> (IIIILnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/components/Button$OnPress;Lnet/minecraft/client/gui/components/Button$CreateNarration;)V
+
+
+# AbstractWidget - ContextMenu
+
+#? if >=26.4 >>+ 'Z'
+#accessible field net/minecraft/client/gui/components/AbstractWidget visible Z
